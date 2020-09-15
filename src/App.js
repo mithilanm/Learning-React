@@ -1,23 +1,26 @@
 import React from "react";
-import HelloWorld from "./Components/HelloWorld";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Home from "./Views/Home";
+import About from "./Views/About";
 
 function App() {
   return (
-    <div>
+    <div className="p-3">
       <Router>
         <Header />
-        <HelloWorld name="Joe" />
-        <Switch>
-          <Route exact path="/">
-            <h1 className="font-bold text-2xl">Home Page</h1>
-          </Route>
-          <Route path="/about">
-            <h1 className="font-bold text-2xl">About Us</h1>
-          </Route>
-        </Switch>
+        <div>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+          </Switch>
+        </div>
         <Footer />
       </Router>
     </div>
