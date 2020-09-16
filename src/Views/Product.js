@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Loader from "../Components/Loader";
+import { useAxiosGet } from "../Hooks/HttpRequests";
 
 function Product() {
   const { id } = useParams();
   const url = `https://5f60f04c90cf8d0016558837.mockapi.io/products/${id}`;
-  const [product, setProduct] = useState(null);
+
+  let product = useAxiosGet(url);
   let content = null;
+  if (product.error) {
+    content = <p>ERROR, try a different id</p>;
+  }
+  if (product.loading) {
+    content = <Loader />;
+  }
 
-  useEffect(() => {
-    axios.get(url).then((response) => {
-      setProduct(response.data);
-    });
-  }, [url]);
-
-  if (product) {
+  if (product.data) {
     content = (
       <div>
-        <h1 className="text-2xl font-bold mb-3">{product.name}</h1>
+        <h1 className="text-2xl font-bold mb-3">{product.data.name}</h1>
         <div>
-          <img src={product.images[0].imageUrl} alt={product.name} />
+          <img src={product.data.images[0].imageUrl} alt={product.data.name} />
         </div>
-        <div className="font-bold text-xl mb-3">$ {product.price}</div>
-        <div>{product.description}</div>
+        <div className="font-bold text-xl mb-3">$ {product.data.price}</div>
+        <div>{product.data.description}</div>
       </div>
     );
   }
